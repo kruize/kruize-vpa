@@ -143,5 +143,3 @@ def generate_create_exp_from_vpa(vpa, containers):
         print("Experiment registered!")
     else:
         print("Failed to register experiment!")
-
-
