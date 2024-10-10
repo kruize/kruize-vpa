@@ -1,0 +1,78 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: kruize-vpa-role
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - customresourcedefinitions
+  verbs:
+  - '*'
+- apiGroups:
+  - apiextensions.k8s.io
+  resources:
+  - customresourcedefinitions
+  verbs:
+  - '*'
+- apiGroups:
+  - autoscaling.k8s.io
+  resources:
+  - verticalpodautoscalers
+  - verticalpodautoscalers/status
+  - verticalpodautoscalercheckpoints
+  verbs:
+  - '*'
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - clusterrolebindings
+  verbs:
+  - '*'
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - "*"
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kruize-vpa
+  namespace: kube-system
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: kruize-vpa-role-binding
+subjects:
+- kind: ServiceAccount
+  name: kruize-vpa
+  namespace: kube-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kruize-vpa-role
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kruize-vpa
+  namespace: kube-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kruize-vpa
+  template:
+    metadata:
+      labels:
+        app: kruize-vpa
+    spec:
+      containers:
+        - name: kruize-vpa
+          image: quay.io/rh-ee-shesaxen/kruize-vpa-patcher:poc
+          imagePullPolicy: Always
+      serviceAccountName: kruize-vpa
