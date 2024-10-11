@@ -2,6 +2,10 @@
 
 Kruize VPA Recommender for Kubernetes/ Openshift
 
+#### Acknowledgments: 
+
+This project is inspired from [CLEVER](https://github.com/sustainable-computing-io/clever) (Container Level Energy-efficient VPA Recommender) for Kubernetes.
+
 ## Prerequisites
 - Kubernetes 1.22+ or OpenShift 4.11
 - Kubernetes Vertical Pod Autoscaler or OpenShift Vertical Pod Autoscaler Operator
