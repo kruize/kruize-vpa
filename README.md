@@ -25,22 +25,13 @@ This project is inspired from [CLEVER](https://github.com/sustainable-computing-
     git clone https://github.com/kruize/kruize-vpa.git
     cd kruize-vpa
     ```
-  - Update the Kruize URL in the recommenderConstants file:
+  - Update the Kruize URL in the manifest file at line#65 `kruize_url: ""`:
     - For OpenShift, retrieve the routes:
     ```commandline
     oc get routes -n openshift-tuning
     ```
     - For Minikube, use the format [minikube_ip]:PORT. 
     - _Note_: This URL is also logged in the kruize-demo script.
-    
-  - Build the Docker Image. 
-    ```commandline
-    docker login quay.io/${user_id}
-    docker build -t quay.io/${user_id}/kruize-vpa:latest .
-    docker push -t quay.io/${user_id}/kruize-vpa:latest .
-    ```
-  - Update the image in the manifest file. Look for the line#76 containing:
-    `image: quay.io/${user_id}/kruize-vpa-patcher:poc`
 
   - Apply the manifest
     ```commandline
