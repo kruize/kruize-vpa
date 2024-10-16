@@ -48,20 +48,24 @@ This project is inspired from [CLEVER](https://github.com/sustainable-computing-
     ```
     
 ### Updating Recommendations with Kruize VPA Recommender:
-Define a VPA Custom Resource with the following configuration for the deployment you want to auto update 
+Deploy the example application that selects the Kruize recommender for VPA.
+```commandline
+kubectl apply -f examples/sysbench.yaml
+```
+The example YAML also defines a VPA Custom Resource with the following configuration to auto update 
 
 ```commandline
 apiVersion: "autoscaling.k8s.io/v1"
 kind: VerticalPodAutoscaler
 metadata:
-  name: tfb-vpa #vpa-name here
+  name: sysbench-vpa
 spec:
   recommenders:
     - name: kruize
   targetRef:
     apiVersion: "apps/v1"
     kind: Deployment
-    name: tfb-qrh-sample #deployment name here
+    name: sysbench
   resourcePolicy:
     containerPolicies:
       - containerName: '*'
