@@ -56,6 +56,14 @@ roleRef:
   kind: ClusterRole
   name: kruize-vpa-role
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kruize-vpa-config
+  namespace: kube-system
+data:
+  kruize_url: ""
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -75,4 +83,10 @@ spec:
         - name: kruize-vpa
           image: quay.io/rh-ee-shesaxen/kruize-vpa-patcher:poc
           imagePullPolicy: Always
+          env:
+            - name: KRUIZE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: kruize-vpa-config
+                  key: kruize_url
       serviceAccountName: kruize-vpa

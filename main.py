@@ -31,9 +31,19 @@ def load_kubernetes_config():
         config.load_kube_config()
 
 
+def fetch_kruize_url():
+    recommenderUtils.set_kruize_url()
+    if recommenderConstants.KRUIZE_URL == "":
+        print("Unable to set Kruize Url.")
+        exit(-1)
+    else:
+        print("Kruize URL: {}".format(recommenderConstants.KRUIZE_URL))
+
+
 def start_recommender():
     # Load kubernetes configuration
     load_kubernetes_config()
+    fetch_kruize_url()
 
     # Get the api instance and custom resources to interact with the cluster
     api_client = client.api_client.ApiClient()
@@ -71,7 +81,7 @@ def start_recommender():
 
             # Generating recommendations
             recom = get_recommendations(vpa, containers_in_deployment)
-            if recom is None:
+            if recom is None or recom == []:
                 print("No Recommendations found. Skipping to update VPA.")
             else:
                 print(recom)
