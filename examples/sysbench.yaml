@@ -33,7 +33,7 @@ spec:
         runAsUser: 65534 # nobody
       containers:
         - name: sysbench
-          image: severalnines/sysbench
+          image: quay.io/rh-ee-shesaxen/sysbench
           resources:
             requests:
               cpu: 250m
