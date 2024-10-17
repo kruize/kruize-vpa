@@ -3,7 +3,7 @@ import json
 
 from kubernetes import client, config
 
-from utils.recommenderUtils import get_response, resource2str
+from utils.recommenderUtils import get_response, resource2str, get_endpoint
 import utils.recommenderConstants as recommenderConstants
 
 # This function fetches latest recommendations from Kruize for a given VPA
@@ -14,14 +14,16 @@ def get_recommendations(vpa, containers):
     # Check if Kruize experiment exists with vpa name
     experiment_name = vpa['metadata']['name'].strip()
     # Calling listExperiment endpoint to check if experiment with vpa name exist or not
-    response = get_response("", recommenderConstants.LIST_EXPERIMENT_ENDPOINT + experiment_name, recommenderConstants.GET)
+    print(get_endpoint(recommenderConstants.LIST_EXPERIMENT_ENDPOINT) + experiment_name)
+    response = get_response("", get_endpoint(recommenderConstants.LIST_EXPERIMENT_ENDPOINT) + experiment_name, recommenderConstants.GET)
 
     if response.ok:
         # Experiment for VPA exists.
         print("Experiment for VPA exists.")
 
         # Calling generateRecommendations endpoint to get latest recommendations from Kruize
-        response = get_response("", recommenderConstants.GENERATE_RECOMMENDATIONS_ENDPOINT + experiment_name, recommenderConstants.POST)
+        print(get_endpoint(recommenderConstants.GENERATE_RECOMMENDATIONS_ENDPOINT) + experiment_name)
+        response = get_response("", get_endpoint(recommenderConstants.GENERATE_RECOMMENDATIONS_ENDPOINT) + experiment_name, recommenderConstants.POST)
 
         if response.ok:
             print("Fetched latest recommendations.")
@@ -138,7 +140,8 @@ def generate_create_exp_from_vpa(vpa, containers):
     modified_json = json.dumps(data, indent=4)
 
     # Creating an experiment on Kruize
-    res = get_response(modified_json, recommenderConstants.CREATE_EXPERIMENT_ENDPOINT, recommenderConstants.POST)
+    print(get_endpoint(recommenderConstants.CREATE_EXPERIMENT_ENDPOINT))
+    res = get_response(modified_json, get_endpoint(recommenderConstants.CREATE_EXPERIMENT_ENDPOINT), recommenderConstants.POST)
     if res.ok:
         print("Experiment registered!")
     else:

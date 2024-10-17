@@ -18,10 +18,11 @@
 # name of the custom recommender
 RECOMMENDER_NAME = "kruize"
 SLEEP_WINDOW=60
-KRUIZE_URL="http://kruize-openshift-tuning.apps.kruize-lm.4zhx.p1.openshiftapps.com/"
-LIST_EXPERIMENT_ENDPOINT=KRUIZE_URL + "listExperiments?experiment_name="
-CREATE_EXPERIMENT_ENDPOINT=KRUIZE_URL + "createExperiment"
-GENERATE_RECOMMENDATIONS_ENDPOINT=KRUIZE_URL + "generateRecommendations?experiment_name="
+KRUIZE_URL=""
+KRUIZE_URL_KEY="KRUIZE_URL"
+LIST_EXPERIMENT_ENDPOINT="/listExperiments?experiment_name="
+CREATE_EXPERIMENT_ENDPOINT="/createExperiment"
+GENERATE_RECOMMENDATIONS_ENDPOINT="/generateRecommendations?experiment_name="
 
 # vpa object related constants
 DOMAIN = "autoscaling.k8s.io"

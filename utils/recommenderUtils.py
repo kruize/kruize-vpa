@@ -11,12 +11,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #  *******************************************************************************/
+import os
 from http.client import responses
 
 import requests
 import utils.recommenderConstants as recommenderConstants
 
 # This file holds various utility functions used in recommender
+
+# This function gets KRUIZE URL from ENV variable
+def set_kruize_url():
+    # retrieve kruize url from environment variable
+    recommenderConstants.KRUIZE_URL = os.getenv(recommenderConstants.KRUIZE_URL_KEY)
 
 # Select the VPAs that choose the current recommender as Kruize
 def selects_vpas_for_current_recommender(vpas, recommender_name):
@@ -79,3 +85,11 @@ def resource2str(resource, value):
             return str(int(value / 1024 / 1024)) + "Mi"
         else:
             return str(int(value / 1024 / 1024 / 1024)) + "Gi"
+
+def get_endpoint(endpoint):
+    if (endpoint == recommenderConstants.LIST_EXPERIMENT_ENDPOINT):
+        return recommenderConstants.KRUIZE_URL + recommenderConstants.LIST_EXPERIMENT_ENDPOINT
+    if (endpoint == recommenderConstants.CREATE_EXPERIMENT_ENDPOINT):
+        return recommenderConstants.KRUIZE_URL + recommenderConstants.CREATE_EXPERIMENT_ENDPOINT
+    if (endpoint == recommenderConstants.GENERATE_RECOMMENDATIONS_ENDPOINT):
+        return recommenderConstants.KRUIZE_URL + recommenderConstants.GENERATE_RECOMMENDATIONS_ENDPOINT
