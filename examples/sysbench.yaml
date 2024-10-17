@@ -1,0 +1,49 @@
+apiVersion: "autoscaling.k8s.io/v1"
+kind: VerticalPodAutoscaler
+metadata:
+  name: sysbench-vpa
+spec:
+  recommenders:
+    - name: kruize
+  targetRef:
+    apiVersion: "apps/v1"
+    kind: Deployment
+    name: sysbench
+  resourcePolicy:
+    containerPolicies:
+      - containerName: '*'
+        controlledResources: ["cpu", "memory"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sysbench
+spec:
+  selector:
+    matchLabels:
+      app: sysbench
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: sysbench
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534 # nobody
+      containers:
+        - name: sysbench
+          image: quay.io/rh-ee-shesaxen/sysbench
+          resources:
+            requests:
+              cpu: 250m
+              memory: 500Mi
+            limits:
+              cpu: 250m
+              memory: 500Mi
+          command:
+          - sysbench
+          - cpu
+          - --threads=1
+          - --time=100000
+          - run
